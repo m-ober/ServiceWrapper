@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<Service>
+		<LongName>TeamSpeak3 Server</LongName>
+		<ShortName>ts3server</ShortName>
+		<Dependencies>tcpip</Dependencies>
+	</Service>
+	<Process>
+		<Executable>ts3server.exe</Executable>
+		<Arguments></Arguments>
+	</Process>
+</Configuration>
