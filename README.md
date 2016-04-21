@@ -36,3 +36,9 @@ If installation was successful, the service can now be started via `net start Sh
 From an (elevated) command prompt run: `servicewrapper.exe /u`
 
 If you want to re-install the service, you may need to restart the computer before doing so.
+
+### Limitations
+
+* There is no error checking
+* If the process dies, the service is stopped (no auto-restart). 
+* If the service is stopped, only the parent process is killed
