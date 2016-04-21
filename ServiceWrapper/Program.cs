@@ -84,11 +84,9 @@ namespace servicewrapper
                     Console.WriteLine("Error 0x{0:X}", wex.ErrorCode);
                     return wex.ErrorCode;
                 }
-                else
-                {
-                    Console.WriteLine(ex.ToString());
-                    return 1;
-                }
+                    
+				Console.WriteLine(ex.ToString());
+				return 1;
             }
 
             return 0;
