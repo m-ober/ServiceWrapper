@@ -11,11 +11,13 @@ Example:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <Configuration>
+	<!-- DO NOT modify once the service has been installed -->        
 	<Service>
 		<LongName>TeamSpeak3 Server</LongName>
 		<ShortName>ts3server</ShortName>
 		<Dependencies>tcpip</Dependencies>
 	</Service>
+	<!-- May always be modified -->
 	<Process>
 		<Executable>ts3server.exe</Executable>
 		<Arguments></Arguments>
