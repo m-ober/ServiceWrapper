@@ -1,6 +1,6 @@
 ﻿using System.ServiceProcess;
 
-namespace servicewrapper 
+namespace ServiceWrapper {
     public partial class Service : ServiceBase {
         public Service()  {
             InitializeComponent();

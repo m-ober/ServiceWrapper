@@ -8,7 +8,7 @@
     <ProjectGuid>{3BC199A5-CA6C-407F-8F7C-3005DC2553C9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>servicewrapper</RootNamespace>
+    <RootNamespace>ServiceWrapper</RootNamespace>
     <AssemblyName>servicewrapper</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
