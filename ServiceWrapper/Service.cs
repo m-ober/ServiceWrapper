@@ -11,12 +11,12 @@ namespace servicewrapper
 
         protected override void OnStart(string[] args)
         {
-            ServiceWrapper.start();
+            ServiceWrapper.Start();
         }
 
         protected override void OnStop()
         {
-            ServiceWrapper.stop();
+            ServiceWrapper.Stop();
         }
     }
 }

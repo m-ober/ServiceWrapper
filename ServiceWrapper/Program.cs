@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration.Install;
-using System.Reflection;
 using System.ServiceProcess;
 
 namespace servicewrapper
@@ -42,7 +41,7 @@ namespace servicewrapper
 
         private static int InstallService()
         {
-            if (!System.IO.File.Exists("service.xml"))
+            if (!System.IO.File.Exists(Config.CfgFile))
             {
                 Console.WriteLine("No configuration (service.xml) found.");
                 return 1;
@@ -50,13 +49,13 @@ namespace servicewrapper
             try
             {
                 // install the service with the Windows Service Control Manager (SCM)
-                ManagedInstallerClass.InstallHelper(new []{ Assembly.GetExecutingAssembly().Location });
+                ManagedInstallerClass.InstallHelper(new []{ Config.Directory });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
+                if (ex.InnerException != null && ex.InnerException is Win32Exception)
                 {
-                    Win32Exception wex = (Win32Exception)ex.InnerException;
+                    Win32Exception wex = ex.InnerException as Win32Exception;
                     Console.WriteLine("Error 0x{0:X}", wex.ErrorCode);
                     return wex.ErrorCode;
                 }
@@ -75,13 +74,13 @@ namespace servicewrapper
             try
             {
                 // uninstall the service from the Windows Service Control Manager (SCM)
-                ManagedInstallerClass.InstallHelper(new []{ "/u", Assembly.GetExecutingAssembly().Location });
+                ManagedInstallerClass.InstallHelper(new[] { "/u", Config.Directory });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
+                if (ex.InnerException != null && ex.InnerException is Win32Exception)
                 {
-                    Win32Exception wex = (Win32Exception)ex.InnerException;
+                    Win32Exception wex = ex.InnerException as Win32Exception;
                     Console.WriteLine("Error 0x{0:X}", wex.ErrorCode);
                     return wex.ErrorCode;
                 }

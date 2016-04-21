@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Xml;
+﻿using System.Xml;
 
 namespace servicewrapper
 {
@@ -19,7 +18,7 @@ namespace servicewrapper
         private void InitializeComponent()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\service.xml");
+            doc.Load(Config.CfgFile);
 
             this.ServiceName =
                 doc.DocumentElement.SelectSingleNode("/Configuration/Service/ShortName").InnerText;

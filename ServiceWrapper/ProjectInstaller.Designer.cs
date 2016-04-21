@@ -18,7 +18,7 @@ namespace servicewrapper
         private void InitializeComponent()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load("service.xml");
+            doc.Load(Config.CfgFile);
 
             this.serviceProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller();
             this.serviceInstaller = new System.ServiceProcess.ServiceInstaller();
