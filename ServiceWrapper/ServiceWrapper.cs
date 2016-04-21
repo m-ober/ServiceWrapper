@@ -3,41 +3,46 @@ using System.Diagnostics;
 using System.Threading;
 using System.Xml;
 
-namespace servicewrapper
-{
-    class ServiceWrapper
-    {
-        private static Process proc;
-        private static volatile bool clean = false;
+namespace servicewrapper {
+    public static class ServiceWrapper {
+        private static volatile bool clean;
+		private static bool executing;
+		private static Process proc;
 
-        public static void Start()
-        {
-            new Thread(new ThreadStart(Execute)).Start();
+        public static void Start() {
+			if(executing) {
+				return;
+			}
+			
+            new Thread(Execute){ IsBackground = true }.Start();
+			executing = true;
         }
 
-        public static void Stop()
-        {
+        public static void Stop() {
             clean = true;
-            proc.Kill();
+			if(proc != null) {
+				proc.Kill();
+			}
         }
 
-        private static void Execute()
-        {
-            XmlDocument doc = new XmlDocument();
+        private static void Execute() {
+            var doc = new XmlDocument();
             doc.Load(Config.CfgFile);
 
-            proc = new Process();
-            proc.StartInfo.WorkingDirectory =
-                System.IO.Path.GetDirectoryName(Config.Directory);
-            proc.StartInfo.FileName =
-                doc.DocumentElement.SelectSingleNode("/Configuration/Process/Executable").InnerText;
-            proc.StartInfo.Arguments =
-                doc.DocumentElement.SelectSingleNode("/Configuration/Process/Arguments").InnerText;
-
+            proc = new Process(){ 
+				StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Config.Directory),
+				StartInfo.FileName = doc.DocumentElement.SelectSingleNode("/Configuration/Process/Executable").InnerText,
+				StartInfo.Arguments = doc.DocumentElement.SelectSingleNode("/Configuration/Process/Arguments").InnerText,
+			};
+			
             proc.Start();
             proc.WaitForExit();
-            if (!clean)
+			
+			executing = false;
+			
+            if (!clean) {
                 throw new Exception("Process exited prematurely");
+			}
         }
     }
 }

@@ -1,21 +1,16 @@
 ﻿using System.ServiceProcess;
 
-namespace servicewrapper
-{
-    public partial class Service : ServiceBase
-    {
-        public Service()
-        {
+namespace servicewrapper 
+    public partial class Service : ServiceBase {
+        public Service()  {
             InitializeComponent();
         }
 
-        protected override void OnStart(string[] args)
-        {
+        protected override void OnStart(string[] args) {
             ServiceWrapper.Start();
         }
 
-        protected override void OnStop()
-        {
+        protected override void OnStop() {
             ServiceWrapper.Stop();
         }
     }

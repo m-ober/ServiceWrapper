@@ -2,47 +2,39 @@
 
 namespace servicewrapper
 {
-    partial class ProjectInstaller
+    public partial class ProjectInstaller
     {
-        private System.ComponentModel.IContainer components = null;
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+		private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller;
+		private System.ComponentModel.IContainer components;
+		
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
-        {
-            XmlDocument doc = new XmlDocument();
+        private void InitializeComponent() {
+            var doc = new XmlDocument();
             doc.Load(Config.CfgFile);
 
-            this.serviceProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller();
-            this.serviceInstaller = new System.ServiceProcess.ServiceInstaller();
+            serviceProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller() {
+				Account = System.ServiceProcess.ServiceAccount.LocalSystem
+				Password = null,
+				Username = null				
+			};
+			
+            serviceInstaller = new System.ServiceProcess.ServiceInstaller() {
+			    DisplayName = doc.DocumentElement.SelectSingleNode("/Configuration/Service/LongName").InnerText,
+				ServiceName = doc.DocumentElement.SelectSingleNode("/Configuration/Service/ShortName").InnerText,
+				ServicesDependedOn = doc.DocumentElement.SelectSingleNode("/Configuration/Service/Dependencies").InnerText.Split(','),
+				StartType = System.ServiceProcess.ServiceStartMode.Automatic
+			}
 
-            this.serviceProcessInstaller.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
-            this.serviceProcessInstaller.Password = null;
-            this.serviceProcessInstaller.Username = null;
-
-            this.serviceInstaller.DisplayName =
-                doc.DocumentElement.SelectSingleNode("/Configuration/Service/LongName").InnerText;
-            this.serviceInstaller.ServiceName =
-                doc.DocumentElement.SelectSingleNode("/Configuration/Service/ShortName").InnerText;
-            this.serviceInstaller.ServicesDependedOn =
-                doc.DocumentElement.SelectSingleNode("/Configuration/Service/Dependencies").InnerText.Split(',');
-
-            this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
-
-            this.Installers.AddRange(new System.Configuration.Install.Installer[] {
-            this.serviceProcessInstaller,
-            this.serviceInstaller});
-
+            Installers.AddRange(new System.Configuration.Install.Installer[] {
+				serviceProcessInstaller,
+				serviceInstaller});
         }
-
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller;
     }
 }

@@ -5,14 +5,10 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.Linq;
 
-
-namespace servicewrapper
-{
+namespace servicewrapper {
     [RunInstaller(true)]
-    public partial class ProjectInstaller : System.Configuration.Install.Installer
-    {
-        public ProjectInstaller()
-        {
+    public partial class ProjectInstaller : System.Configuration.Install.Installer {
+        public ProjectInstaller() {
             InitializeComponent();
         }
     }
