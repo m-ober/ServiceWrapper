@@ -16,7 +16,7 @@ namespace servicewrapper
             {
                 string arg = "";
                 if (args.Length > 0)
-                    arg = args[0].ToLowerInvariant().Substring(0, 2);
+                    arg = args[0].ToLowerInvariant();
 
                 switch (arg)
                 {
@@ -42,12 +42,15 @@ namespace servicewrapper
 
         private static int InstallService()
         {
-            var service = new Service();
-
+            if (!System.IO.File.Exists("service.xml"))
+            {
+                Console.WriteLine("No configuration (service.xml) found.");
+                return 1;
+            }
             try
             {
                 // install the service with the Windows Service Control Manager (SCM)
-                ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+                ManagedInstallerClass.InstallHelper(new []{ Assembly.GetExecutingAssembly().Location });
             }
             catch (Exception ex)
             {
@@ -60,7 +63,7 @@ namespace servicewrapper
                 else
                 {
                     Console.WriteLine(ex.ToString());
-                    return -1;
+                    return 1;
                 }
             }
 
@@ -69,16 +72,14 @@ namespace servicewrapper
 
         private static int UninstallService()
         {
-            var service = new Service();
-
             try
             {
                 // uninstall the service from the Windows Service Control Manager (SCM)
-                ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                ManagedInstallerClass.InstallHelper(new []{ "/u", Assembly.GetExecutingAssembly().Location });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException.GetType() == typeof(Win32Exception))
+                if (ex.InnerException != null && ex.InnerException.GetType() == typeof(Win32Exception))
                 {
                     Win32Exception wex = (Win32Exception)ex.InnerException;
                     Console.WriteLine("Error 0x{0:X}", wex.ErrorCode);
@@ -87,7 +88,7 @@ namespace servicewrapper
                 else
                 {
                     Console.WriteLine(ex.ToString());
-                    return -1;
+                    return 1;
                 }
             }
 
