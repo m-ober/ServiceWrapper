@@ -1,6 +1,4 @@
-﻿using System.Xml;
-
-namespace ServiceWrapper
+﻿namespace ServiceWrapper
 {
     public partial class ProjectInstaller
     {
